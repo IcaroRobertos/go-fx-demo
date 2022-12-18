@@ -12,15 +12,18 @@ import (
 func main() {
 	mainDatabase := databases.GormConnect()
 
-	controllers := routes.RouteControllers{
-		RootController: controllers.RootController{},
-		UserController: controllers.UserController{
-			UserUseCases: usecases.UserUseCases{
-				UserDatabaseRepository: &repositories.UserDatabaseRepository{
-					MainDatabase: mainDatabase,
-				},
+	rootController := controllers.RootController{}
+	userController := controllers.UserController{
+		UserUseCases: usecases.UserUseCases{
+			UserDatabaseRepository: &repositories.UserDatabaseRepository{
+				MainDatabase: mainDatabase,
 			},
 		},
+	}
+
+	controllers := routes.RouteControllers{
+		RootController: rootController,
+		UserController: userController,
 	}
 
 	webservers.NewGinWebServer(controllers)
