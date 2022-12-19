@@ -9,7 +9,3 @@ func NewGinWebServer() *gin.Engine {
 
 	return r
 }
-
-func StartGinWebserver(r *gin.Engine) {
-	r.Run()
-}

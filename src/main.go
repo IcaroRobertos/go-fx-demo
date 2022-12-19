@@ -7,6 +7,7 @@ import (
 	"github.com/IcaroRobertos/go-fx-demo/src/infrastructure/ports/http/controllers"
 	"github.com/IcaroRobertos/go-fx-demo/src/infrastructure/ports/http/routes"
 	"github.com/IcaroRobertos/go-fx-demo/src/infrastructure/repositories"
+	"github.com/gin-gonic/gin"
 	"go.uber.org/fx"
 )
 
@@ -21,6 +22,8 @@ func main() {
 		fx.Provide(routes.NewRouteControllers),
 		fx.Provide(webservers.NewGinWebServer),
 		fx.Invoke(routes.Router),
-		fx.Invoke(webservers.StartGinWebserver),
+		fx.Invoke(func(r *gin.Engine) {
+			r.Run()
+		}),
 	).Run()
 }
