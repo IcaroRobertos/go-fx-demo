@@ -12,7 +12,6 @@ import (
 )
 
 func main() {
-
 	fx.New(
 		fx.Provide(databases.GormConnect),
 		fx.Provide(repositories.NewUserDatabaseRepository),
