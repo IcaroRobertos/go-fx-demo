@@ -7,24 +7,20 @@ import (
 	"github.com/IcaroRobertos/go-fx-demo/src/infrastructure/ports/http/controllers"
 	"github.com/IcaroRobertos/go-fx-demo/src/infrastructure/ports/http/routes"
 	"github.com/IcaroRobertos/go-fx-demo/src/infrastructure/repositories"
+	"go.uber.org/fx"
 )
 
 func main() {
-	mainDatabase := databases.GormConnect()
 
-	rootController := controllers.RootController{}
-	userController := controllers.UserController{
-		UserUseCases: usecases.UserUseCases{
-			UserDatabaseRepository: &repositories.UserDatabaseRepository{
-				MainDatabase: mainDatabase,
-			},
-		},
-	}
-
-	controllers := routes.RouteControllers{
-		RootController: rootController,
-		UserController: userController,
-	}
-
-	webservers.NewGinWebServer(controllers)
+	fx.New(
+		fx.Provide(databases.GormConnect),
+		fx.Provide(repositories.NewUserDatabaseRepository),
+		fx.Provide(usecases.NewUserUseCases),
+		fx.Provide(controllers.NewRootController),
+		fx.Provide(controllers.NewUserController),
+		fx.Provide(routes.NewRouteControllers),
+		fx.Provide(webservers.NewGinWebServer),
+		fx.Invoke(routes.Router),
+		fx.Invoke(webservers.StartGinWebserver),
+	).Run()
 }

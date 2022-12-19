@@ -1,14 +1,15 @@
 package webservers
 
 import (
-	"github.com/IcaroRobertos/go-fx-demo/src/infrastructure/ports/http/routes"
 	"github.com/gin-gonic/gin"
 )
 
-func NewGinWebServer(controllers routes.RouteControllers) {
+func NewGinWebServer() *gin.Engine {
 	r := gin.Default()
 
-	routes.Router(r, controllers)
+	return r
+}
 
+func StartGinWebserver(r *gin.Engine) {
 	r.Run()
 }

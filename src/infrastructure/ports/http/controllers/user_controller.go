@@ -9,7 +9,13 @@ import (
 )
 
 type UserController struct {
-	UserUseCases usecases.UserUseCases
+	UserUseCases *usecases.UserUseCases
+}
+
+func NewUserController(userUseCases *usecases.UserUseCases) *UserController {
+	return &UserController{
+		UserUseCases: userUseCases,
+	}
 }
 
 func (uc *UserController) Create(c *gin.Context) {

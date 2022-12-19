@@ -9,6 +9,12 @@ type UserUseCases struct {
 	UserDatabaseRepository interfaces.IUserDatabaseRepository
 }
 
+func NewUserUseCases(userDatabaseRepository interfaces.IUserDatabaseRepository) *UserUseCases {
+	return &UserUseCases{
+		UserDatabaseRepository: userDatabaseRepository,
+	}
+}
+
 func (u *UserUseCases) Create(user entities.User) (entities.User, error) {
 	return u.UserDatabaseRepository.Create(user)
 }
